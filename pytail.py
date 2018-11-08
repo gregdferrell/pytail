@@ -20,18 +20,25 @@ def get_input_args():
     return args
 
 
-def tail_from(f, lines_remaining):
+def tail_from(f, num_lines):
+    """
+    Sets the file's current position to the point from which to print the tail output, given the number of lines to print.
+    It is assumed the file has already been opened with mode 'r'.
+    :param f: file
+    :param num_lines: the number of lines to tail
+    :return: nothing; instead sets the file cursor to the point to tail from
+    """
+    # Seek to end of file, reading from here will give us '', so we'll start our loop by backing up 1 char
     f.seek(0, os.SEEK_END)
-    while lines_remaining > 0:
-        try:
-            f.seek(f.tell() - 1, os.SEEK_SET)
-        except ValueError:
-            # If we get to beginning of file, break
-            break
+
+    # While there is still a positive number of lines to tail and we're not at the beginning of the file,
+    # move the cursor back one character, read that character and check to see if it is a line separator.
+    while num_lines > 0 and f.tell() > 0:
+        f.seek(f.tell() - 1, os.SEEK_SET)
         ch = f.read(1)
         if ch == os.linesep:
-            lines_remaining -= 1
-        if lines_remaining > 0:
+            num_lines -= 1
+        if num_lines > 0:
             f.seek(f.tell() - 1, os.SEEK_SET)
 
 
