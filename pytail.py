@@ -39,6 +39,7 @@ def tail_from(f, num_lines):
         if ch == os.linesep:
             num_lines -= 1
         if num_lines > 0:
+            # Back up an additional character because reading moved our cursor forward (1 forward, 2 back each iteration)
             f.seek(f.tell() - 1, os.SEEK_SET)
 
 
