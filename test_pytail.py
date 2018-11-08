@@ -1,6 +1,6 @@
 import os
 
-from app import tail_from
+from pytail import tail_from
 
 
 def test_tail_from_1line_n1():
